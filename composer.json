@@ -19,7 +19,11 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "dektrium/yii2-user": "^0.9.12",
-        "2amigos/yii2-ckeditor-widget": "^2.1"
+        "2amigos/yii2-ckeditor-widget": "^2.1",
+        "kartik-v/yii2-widget-fileinput": "*",
+        "2amigos/qrcode-library": "~1.1",
+        "kartik-v/yii2-mpdf": "^1.0",
+        "execut/yii2-widget-bootstraptreeview": "^1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

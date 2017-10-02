@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\file\FileInput;
 use dosamigos\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
@@ -11,15 +12,28 @@ use dosamigos\ckeditor\CKEditor;
 
 <div class="product-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
-    
-    <?= Html::activeDropDownList($model, 'category_id', $categories) ?>
 
-    <?= $form->field($uploadForm, 'imageFile')->fileInput(['accept' => 'image/*']) ?>
+    <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => '---- Selecione una categoría ----'])->label('Categoria') ?>
+
+    <?= $form->field($uploadForm, 'imageFile')->widget(FileInput::classname(), [
+        'options' => ['accept' => 'image/*', 'multiple'=>false],
+        'pluginOptions'=>[
+            'allowedFileExtensions'=>['jpg','gif','png'],
+            'initialPreview'=> str_replace("index.php", "", Yii::$app->homeUrl).'/products-images/'.$model->image_filename,
+            'initialPreviewAsData'=>true,
+            'overwriteInitial'=>true,
+            'showPreview' => true,
+            'showCaption' => false,
+            'showRemove' => false,
+            'showUpload' => false,
+            'initialPreviewShowDelete' => false,
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'details')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],

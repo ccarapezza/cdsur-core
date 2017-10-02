@@ -24,10 +24,13 @@ class UploadForm extends Model
     {
         
         if ($this->validate()) {
-            if(!mkdir(Yii::getAlias('@webroot').'/products-images/'.$subfolderName, 0777)) {
-                die('Fallo al crear las carpetas...');
+            $folderName = Yii::getAlias('@webroot').'/products-images/'.$subfolderName;
+            if(!file_exists($folderName)){
+                if(!mkdir($folderName, 0777)) {
+                    die('Fallo al crear las carpetas...');
+                }
             }
-            $this->imageFile->saveAs(Yii::getAlias('@webroot').'/products-images/'. $subfolderName . '/' . $fileName);
+            $this->imageFile->saveAs($folderName . '/' . $fileName);
             return true;
         } else {
             return false;

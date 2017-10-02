@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Generate QR-Codes', ['qrcodes', 'code' => $model->code], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -36,5 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'category_id',
         ],
     ]) ?>
+    <?php
+       if ($model->image_filename!='') {
+         echo '<br /><p><img src="'.str_replace("index.php", "", Yii::$app->homeUrl).'/products-images/'.$model->image_filename.'"></p>';
+       }    
+    ?>
 
 </div>

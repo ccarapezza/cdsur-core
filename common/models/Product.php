@@ -48,9 +48,9 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'code' => 'Code',
-            'description' => 'Description',
-            'details' => 'Details',
+            'code' => 'Código',
+            'description' => 'Descripción',
+            'details' => 'Detalles',
             'image_filename' => 'Image Filename',
             'category_id' => 'Category ID',
         ];
