@@ -20,7 +20,10 @@ class ProductController extends ActiveController
 	{
 	    return ArrayHelper::merge([
 	        [
-	            'class' => Cors::className()
+	            'class' => Cors::className(),
+	            'cors' => [
+	            	'Access-Control-Request-Method' => ['GET', 'POST', 'OPTIONS'],
+	            ]
 	        ],
 	    ], parent::behaviors());
 	}
@@ -29,6 +32,7 @@ class ProductController extends ActiveController
 	{
 		$actions = parent::actions();
 		unset($actions['index']);
+		unset($actions['view']);
 		return $actions;
 	}
 
@@ -47,6 +51,76 @@ class ProductController extends ActiveController
 			$products->where(["category.id"=>$categoryId]);
 		}
 		
+		return $products->asArray()->all();
+	}
+
+	public function actionView($id)
+	{
+		$request = Yii::$app->request;
+
+		$products = Product::Find()->joinWith([
+		    'category.parent cc' => function ($query) {
+		        $query->joinWith('parent p');
+		    },
+		]);
+		$products->where(["product.id"=>$id]);
+
+		return $products->asArray()->one();
+	}
+
+	public function actionCode($code)
+	{
+		$request = Yii::$app->request;
+
+		$products = Product::Find()->joinWith([
+		    'category.parent cc' => function ($query) {
+		        $query->joinWith('parent p');
+		    },
+		]);
+		$products->where(["product.code"=>$code]);
+
+		return $products->asArray()->one();
+	}
+
+	public function actionSearch()
+	{
+		$request = Yii::$app->request;
+		$code = $request->get('code');
+		$description = $request->get('description');
+
+		$products = Product::Find()->joinWith([
+		    'category.parent cc' => function ($query) {
+		        $query->joinWith('parent p');
+		    },
+		]);
+
+		if(isset($code)){
+			$products->where(['product.code'=>$code]);
+		}else{
+			$products->where(['like', 'product.description', [$description]]);
+		}
+
+		return $products->asArray()->all();
+	}
+
+	public function actionSearchpost()
+	{
+		$request = Yii::$app->request;
+		$code = $request->post('code');
+		$description = $request->post('description');
+
+		$products = Product::Find()->joinWith([
+		    'category.parent cc' => function ($query) {
+		        $query->joinWith('parent p');
+		    },
+		]);
+
+		if(isset($code)){
+			$products->where(['product.code'=>$code]);
+		}else{
+			$products->where(['like', 'product.description', [$description]]);
+		}
+
 		return $products->asArray()->all();
 	}
 }

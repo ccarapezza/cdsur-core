@@ -47,6 +47,11 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'product',
+                    'extraPatterns' => [
+                        'GET code/<code>' => 'code',
+                        'GET search' => 'search',
+                        'POST searchpost' => 'searchpost',
+                    ]
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
