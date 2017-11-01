@@ -4,8 +4,11 @@ namespace api\controllers;
 
 use yii\helpers\ArrayHelper;
 use yii\filters\Cors;
+use yii\filters\AccessControl;
 use yii\rest\ActiveController;
 use common\models\Category;
+use dektrium\user\models\LoginForm;
+use Yii;
 /**
  * Category Controller API
  *
@@ -18,6 +21,27 @@ class SecurityController extends ActiveController
     public function behaviors()
 	{
 	    return ArrayHelper::merge([
+	    	'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout', 'signup', 'secured'],
+                'rules' => [
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['secured'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
 	        [
 	            'class' => Cors::className()
 	        ],
@@ -43,18 +67,25 @@ class SecurityController extends ActiveController
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        $model = \Yii::createObject(LoginForm::className());
+        $model->login = Yii::$app->request->post('username');
+        $model->password = Yii::$app->request->post('password');
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->login()) {
+            return Yii::$app->user->identity;
         } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            throw new \yii\web\HttpException(400, 'Bad request.');
         }
+    }
+
+    /**
+     * Logs in a user.
+     *
+     * @return mixed
+     */
+    public function actionSecured()
+    {
+    	return "OK!!";
     }
 
     /**
@@ -84,11 +115,10 @@ class SecurityController extends ActiveController
 		$password = $request->get('password');
 
         if (isset($email) && isset($username) && isset($password)) {
-        	$model
         	$model->email = $email;
 			$model->username = $username;
 			$model->password = $password;
-			
+
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
@@ -100,3 +130,4 @@ class SecurityController extends ActiveController
             'model' => $model,
         ]);
     }
+}

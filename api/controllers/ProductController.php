@@ -20,10 +20,7 @@ class ProductController extends ActiveController
 	{
 	    return ArrayHelper::merge([
 	        [
-	            'class' => Cors::className(),
-	            'cors' => [
-	            	'Access-Control-Request-Method' => ['GET', 'POST', 'OPTIONS'],
-	            ]
+	            'class' => Cors::className()
 	        ],
 	    ], parent::behaviors());
 	}

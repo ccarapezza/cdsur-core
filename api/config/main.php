@@ -61,6 +61,14 @@ return [
                         'GET parent' => 'parent',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'security',
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'POST signup' => 'signup',
+                    ]
+                ],
             ],
         ],
         /*
