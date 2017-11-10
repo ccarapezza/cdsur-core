@@ -43,7 +43,12 @@ class SecurityController extends ActiveController
                 ],
             ],
 	        [
-	            'class' => Cors::className()
+	            'class' => Cors::className(),
+	            'cors' => [
+	                'Access-Control-Allow-Credentials' => true,
+	                'Access-Control-Allow-Origin' => '*',
+	                'Access-Control-Max-Age' => 3600,
+	            ],
 	        ],
 	    ], parent::behaviors());
 	}

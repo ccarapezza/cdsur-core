@@ -18,12 +18,40 @@ class ProductController extends ActiveController
 
     public function behaviors()
 	{
+	    return [
+	        'corsFilter' => [
+	            'class' => Cors::className(),
+	            'cors' => [
+	                // restrict access to
+	                'Origin' => ['http://localhost:8100'],
+	                'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS' ],
+	                // Allow only POST and PUT methods
+	                'Access-Control-Request-Headers' => ['X-Wsse'],
+	                // Allow only headers 'X-Wsse'
+	                'Access-Control-Allow-Credentials' => true,
+	                // Allow OPTIONS caching
+	                'Access-Control-Max-Age' => 3600,
+	                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
+	                'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
+	            ],
+
+	        ],
+	    ];
+	}
+
+    /*public function behaviors()
+	{
 	    return ArrayHelper::merge([
 	        [
-	            'class' => Cors::className()
+	            'class' => Cors::className(),
+	            'cors' => [
+	                'Access-Control-Allow-Credentials' => true,
+	                'Access-Control-Allow-Origin' => '*',
+	                'Access-Control-Max-Age' => 3600,
+	            ],
 	        ],
 	    ], parent::behaviors());
-	}
+	}*/
 
     public function actions()
 	{

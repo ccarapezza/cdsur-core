@@ -67,6 +67,7 @@ return [
                     'extraPatterns' => [
                         'POST login' => 'login',
                         'POST signup' => 'signup',
+                        'POST secured' => 'secured',
                     ]
                 ],
             ],
