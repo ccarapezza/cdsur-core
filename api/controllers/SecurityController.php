@@ -20,6 +20,12 @@ class SecurityController extends ActiveController
 
     public function behaviors()
 	{
+		$behaviors = parent::behaviors();
+	    $behaviors['authenticator'] = [
+	        'class' => HttpBasicAuth::className(),
+	    ];
+	    return $behaviors;
+
 	    return ArrayHelper::merge([
 	    	'access' => [
                 'class' => AccessControl::className(),
@@ -49,6 +55,9 @@ class SecurityController extends ActiveController
 	                'Access-Control-Allow-Origin' => '*',
 	                'Access-Control-Max-Age' => 3600,
 	            ],
+	        ],
+	        [
+	            'class' => HttpBasicAuth::className(),
 	        ],
 	    ], parent::behaviors());
 	}

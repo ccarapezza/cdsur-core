@@ -23,6 +23,11 @@ return [
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-api', 'httpOnly' => true],
         ],*/
+        'user' => [
+            'identityClass' => 'dektrium\user\models\User',
+            'enableSession' => false,
+            'loginUrl' => null,
+        ],
         'session' => [
             // this is the name of the session cookie used for login on the api
             'name' => 'cdsur-core',
@@ -68,6 +73,13 @@ return [
                         'POST login' => 'login',
                         'POST signup' => 'signup',
                         'POST secured' => 'secured',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'user',
+                    'extraPatterns' => [
+                        'POST login' => 'login',
                     ]
                 ],
             ],

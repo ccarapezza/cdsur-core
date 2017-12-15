@@ -6,6 +6,8 @@ use yii\helpers\ArrayHelper;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 use common\models\Category;
+use yii\filters\AccessControl;
+use yii\filters\auth\HttpBasicAuth;
 /**
  * Category Controller API
  *
@@ -17,11 +19,30 @@ class CategoryController extends ActiveController
 
     public function behaviors()
 	{
-	    return ArrayHelper::merge([
+		$behaviors = parent::behaviors();
+		$behaviors['authenticator'] = [
+        	'class' => HttpBasicAuth::className(),
+		];
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                	'allow' => true,
+                	'roles' => ['@']
+            	],
+            ],
+        ];
+        $behaviors['corsFilter'] = [
+            'class' => Cors::className(),
+        ];
+        return $behaviors;
+
+
+	    /*return ArrayHelper::merge([
 	        [
-	            'class' => Cors::className()
+				'class' => Cors::className()
 	        ],
-	    ], parent::behaviors());
+	    ], parent::behaviors());*/
 	}
 
     public function actions()
