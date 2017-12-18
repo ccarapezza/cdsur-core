@@ -3,11 +3,12 @@
 namespace api\controllers;
 
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 use yii\filters\Cors;
+use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
 use common\models\Category;
-use yii\filters\AccessControl;
-use yii\filters\auth\HttpBasicAuth;
+
 /**
  * Category Controller API
  *
@@ -20,29 +21,18 @@ class CategoryController extends ActiveController
     public function behaviors()
 	{
 		$behaviors = parent::behaviors();
-		$behaviors['authenticator'] = [
-        	'class' => HttpBasicAuth::className(),
-		];
-        $behaviors['access'] = [
-            'class' => AccessControl::className(),
-            'rules' => [
-                [
-                	'allow' => true,
-                	'roles' => ['@']
-            	],
+		// add CORS filter
+        $behaviors['corsFilter'] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age' => 86400,
             ],
         ];
-        $behaviors['corsFilter'] = [
-            'class' => Cors::className(),
-        ];
         return $behaviors;
-
-
-	    /*return ArrayHelper::merge([
-	        [
-				'class' => Cors::className()
-	        ],
-	    ], parent::behaviors());*/
 	}
 
     public function actions()

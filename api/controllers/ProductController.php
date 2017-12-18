@@ -4,8 +4,10 @@ namespace api\controllers;
 
 use yii\helpers\ArrayHelper;
 use yii\filters\Cors;
+use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
 use common\models\Product;
+
 use Yii;
 /**
  * Product Controller API
@@ -18,25 +20,19 @@ class ProductController extends ActiveController
 
     public function behaviors()
 	{
-	    return [
-	        'corsFilter' => [
-	            'class' => Cors::className(),
-	            'cors' => [
-	                // restrict access to
-	                'Origin' => ['http://localhost:8100'],
-	                'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS' ],
-	                // Allow only POST and PUT methods
-	                'Access-Control-Request-Headers' => ['X-Wsse'],
-	                // Allow only headers 'X-Wsse'
-	                'Access-Control-Allow-Credentials' => true,
-	                // Allow OPTIONS caching
-	                'Access-Control-Max-Age' => 3600,
-	                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-	                'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
-	            ],
-
-	        ],
-	    ];
+	    $behaviors = parent::behaviors();
+		// add CORS filter
+        $behaviors['corsFilter'] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age' => 86400,
+            ],
+        ];
+        return $behaviors;
 	}
 
     /*public function behaviors()
@@ -44,11 +40,6 @@ class ProductController extends ActiveController
 	    return ArrayHelper::merge([
 	        [
 	            'class' => Cors::className(),
-	            'cors' => [
-	                'Access-Control-Allow-Credentials' => true,
-	                'Access-Control-Allow-Origin' => '*',
-	                'Access-Control-Max-Age' => 3600,
-	            ],
 	        ],
 	    ], parent::behaviors());
 	}*/

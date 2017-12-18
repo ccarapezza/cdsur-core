@@ -14,6 +14,9 @@ return [
     'modules' => [],
     'components' => [
         'request' => [
+            'class' => '\yii\web\Request',
+            'enableCookieValidation' => false,
+            'enableCsrfValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ]
@@ -56,6 +59,7 @@ return [
                         'GET code/<code>' => 'code',
                         'GET search' => 'search',
                         'POST searchpost' => 'searchpost',
+                        'OPTIONS searchpost' => 'searchpost',
                     ]
                 ],
                 [
@@ -71,27 +75,19 @@ return [
                     'controller' => 'security',
                     'extraPatterns' => [
                         'POST login' => 'login',
-                        'POST signup' => 'signup',
-                        'POST secured' => 'secured',
-                    ]
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'user',
-                    'extraPatterns' => [
-                        'POST login' => 'login',
+                        'OPTIONS login' => 'options',
+                        'POST user-info' => 'user-info',
+                        'OPTIONS user-info' => 'options',
                     ]
                 ],
             ],
         ],
-        /*
-        'urlManager' => [
+        /*'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
-        ],
-        */
+        ],*/
     ],
     'params' => $params,
 ];

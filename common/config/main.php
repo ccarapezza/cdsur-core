@@ -7,7 +7,6 @@ return [
         ],
         'user' => [
 	        'identityClass' => 'dektrium\user\models\User',
-	        'loginUrl' => ['admin/user/login'],
 	    ]
     ],
     'modules' => [

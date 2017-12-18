@@ -6,142 +6,104 @@ use yii\helpers\ArrayHelper;
 use yii\filters\Cors;
 use yii\filters\AccessControl;
 use yii\rest\ActiveController;
+use yii\web\Controller;
+use yii\web\Response;
 use common\models\Category;
 use dektrium\user\models\LoginForm;
+use yii\filters\auth\HttpBearerAuth;
 use Yii;
 /**
  * Category Controller API
  *
  * @author Christian Carapezza <carapezza.christian@gmail.com>
  */
-class SecurityController extends ActiveController
+class SecurityController extends Controller
 {
-    public $modelClass = 'common\models\User';
+    /**
+     * List of allowed domains.
+     * Note: Restriction works only for AJAX (using CORS, is not secure).
+     *
+     * @return array List of domains, that can access to this API
+     */
+    public static function allowedDomains()
+    {
+        return [
+            '*',                        // star allows all domains
+            'http://localhost:8100',
+            //'http://test2.example.com',
+        ];
+    }
 
     public function behaviors()
 	{
-		$behaviors = parent::behaviors();
-	    $behaviors['authenticator'] = [
-	        'class' => HttpBasicAuth::className(),
-	    ];
-	    return $behaviors;
+        $behaviors = array();
 
-	    return ArrayHelper::merge([
-	    	'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup', 'secured'],
-                'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['secured'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+        $behaviors['bearerAuth'] = [
+            'class' => HttpBearerAuth::className(),
+            'except' => ['login', 'options'],
+        ];
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'only' => ['login', 'user-info'],
+            'rules' => [
+                [
+                    'actions' => ['login',],
+                    'allow' => true,
+                    'roles' => ['?'],
+                ],
+                [
+                    'actions' => ['user-info'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+                [
+                    'allow' => true,
+                    'verbs' => ['OPTIONS']
                 ],
             ],
-	        [
-	            'class' => Cors::className(),
-	            'cors' => [
-	                'Access-Control-Allow-Credentials' => true,
-	                'Access-Control-Allow-Origin' => '*',
-	                'Access-Control-Max-Age' => 3600,
-	            ],
-	        ],
-	        [
-	            'class' => HttpBasicAuth::className(),
-	        ],
-	    ], parent::behaviors());
+        ];
+        // add CORS filter
+        $behaviors['corsFilter'] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age' => 86400,
+            ],
+        ];
+
+	    return $behaviors;
 	}
 
-    public function actions()
-	{
-		$actions = parent::actions();
-		unset($actions['index']);
-		unset($actions['view']);
-		unset($actions['create']);
-		unset($actions['update']);
-		unset($actions['delete']);
-
-		return $actions;
-	}
-
-	/**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
     public function actionLogin()
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
         $model = \Yii::createObject(LoginForm::className());
-        $model->login = Yii::$app->request->post('username');
-        $model->password = Yii::$app->request->post('password');
-
-        if ($model->login()) {
-            return Yii::$app->user->identity;
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
+            return ['access_token' => Yii::$app->user->identity->getAuthKey()];
         } else {
-            throw new \yii\web\HttpException(400, 'Bad request.');
+            throw new \yii\web\HttpException(403, 'Username or password is incorrect.');
         }
     }
 
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
-    public function actionSecured()
+    public function actionUserInfo()
     {
-    	return "OK!!";
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return ArrayHelper::toArray(Yii::$app->user->identity, [
+            'dektrium\user\models\User' => [
+                'username',
+                'email'
+            ],
+        ]);;
     }
 
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
-    public function actionLogout()
+    public function actionOptions()
     {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     */
-    public function actionSignup()
-    {
-        $model = new SignupForm();
-        $request = Yii::$app->request;
-
-		$email = $request->get('email');
-		$username = $request->get('username');
-		$password = $request->get('password');
-
-        if (isset($email) && isset($username) && isset($password)) {
-        	$model->email = $email;
-			$model->username = $username;
-			$model->password = $password;
-
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return true;
     }
 }
