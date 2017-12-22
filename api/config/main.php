@@ -21,6 +21,10 @@ return [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+        ],
         /*'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
@@ -78,6 +82,10 @@ return [
                         'OPTIONS login' => 'options',
                         'POST user-info' => 'user-info',
                         'OPTIONS user-info' => 'options',
+                        'POST signup' => 'signup',
+                        'OPTIONS signup' => 'options',
+                        'GET confirm/<id>/<code>' => 'confirm',
+                        'OPTIONS confirm' => 'confirm'
                     ]
                 ],
             ],

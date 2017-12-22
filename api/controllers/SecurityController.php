@@ -9,7 +9,9 @@ use yii\rest\ActiveController;
 use yii\web\Controller;
 use yii\web\Response;
 use common\models\Category;
+use dektrium\user\models\User;
 use dektrium\user\models\LoginForm;
+use dektrium\user\models\RegistrationForm;
 use yii\filters\auth\HttpBearerAuth;
 use Yii;
 /**
@@ -19,35 +21,21 @@ use Yii;
  */
 class SecurityController extends Controller
 {
-    /**
-     * List of allowed domains.
-     * Note: Restriction works only for AJAX (using CORS, is not secure).
-     *
-     * @return array List of domains, that can access to this API
-     */
-    public static function allowedDomains()
-    {
-        return [
-            '*',                        // star allows all domains
-            'http://localhost:8100',
-            //'http://test2.example.com',
-        ];
-    }
-
+    
     public function behaviors()
-	{
-        $behaviors = array();
+    {
+        $behaviors = parent::behaviors();
 
         $behaviors['bearerAuth'] = [
             'class' => HttpBearerAuth::className(),
-            'except' => ['login', 'options'],
+            'except' => ['login', 'signup', 'options', 'confirm'],
         ];
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['login', 'user-info'],
+            'only' => ['login', 'signup', 'confirm', 'user-info'],
             'rules' => [
                 [
-                    'actions' => ['login',],
+                    'actions' => ['login', 'signup', 'confirm'],
                     'allow' => true,
                     'roles' => ['?'],
                 ],
@@ -74,8 +62,8 @@ class SecurityController extends Controller
             ],
         ];
 
-	    return $behaviors;
-	}
+        return $behaviors;
+    }
 
     public function actionLogin()
     {
@@ -101,9 +89,43 @@ class SecurityController extends Controller
         ]);;
     }
 
+    public function actionSignup()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = \Yii::createObject(RegistrationForm::className());
+        $request = Yii::$app->request;
+
+        $email = $request->post('email');
+        $username = $request->post('username');
+        $password = $request->post('password');
+
+        if (isset($email) && isset($username) && isset($password)) {
+            $model->email = $email;
+            $model->username = $username;
+            $model->password = $password;
+            
+            if ($model->register()) {
+                return "Register OK!";
+            }
+        }
+
+        throw new \yii\web\HttpException(403, 'Username or password is incorrect.');
+
+        //throw new \yii\web\HttpException(400, 'Bad request.');
+    }
+
+    public function actionConfirm($id, $code)
+    {
+        $user = User::FindOne($id);
+        if($user->attemptConfirmation($code))
+            return 'User has been confirmed';
+        else
+            throw new \yii\web\HttpException(400, 'Confirmation is not valid.');
+    }
+
     public function actionOptions()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         return true;
     }
-}
+} 

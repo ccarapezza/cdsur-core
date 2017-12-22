@@ -7,7 +7,11 @@ return [
         ],
         'user' => [
 	        'identityClass' => 'dektrium\user\models\User',
-	    ]
+	    ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+        ],
     ],
     'modules' => [
 	    'user' => [
