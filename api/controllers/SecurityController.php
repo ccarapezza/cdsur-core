@@ -12,10 +12,11 @@ use common\models\Category;
 use dektrium\user\models\User;
 use dektrium\user\models\LoginForm;
 use dektrium\user\models\RegistrationForm;
-use yii\filters\auth\HttpBearerAuth;
+use api\filters\HttpBearerCdsurAuth;
 use Yii;
+
 /**
- * Category Controller API
+ * Security Controller API
  *
  * @author Christian Carapezza <carapezza.christian@gmail.com>
  */
@@ -27,12 +28,12 @@ class SecurityController extends Controller
         $behaviors = parent::behaviors();
 
         $behaviors['bearerAuth'] = [
-            'class' => HttpBearerAuth::className(),
+            'class' => HttpBearerCdsurAuth::className(),
             'except' => ['login', 'signup', 'options', 'confirm'],
         ];
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['login', 'signup', 'confirm', 'user-info'],
+            'only' => ['login', 'signup', 'confirm', 'user-info', 'test'],
             'rules' => [
                 [
                     'actions' => ['login', 'signup', 'confirm'],
@@ -40,7 +41,7 @@ class SecurityController extends Controller
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => ['user-info'],
+                    'actions' => ['user-info', 'test'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -127,5 +128,11 @@ class SecurityController extends Controller
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         return true;
+    }
+
+    public function actionTest()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return Yii::$app->request->headers;
     }
 } 

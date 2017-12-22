@@ -6,7 +6,7 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-	        'identityClass' => 'dektrium\user\models\User',
+	        'identityClass' => 'common\models\User',
 	    ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

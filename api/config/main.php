@@ -21,17 +21,8 @@ return [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => false,
-        ],
-        /*'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-api', 'httpOnly' => true],
-        ],*/
         'user' => [
-            'identityClass' => 'dektrium\user\models\User',
+            'identityClass' => 'common\models\User',
             'enableSession' => false,
             'loginUrl' => null,
         ],
@@ -63,7 +54,7 @@ return [
                         'GET code/<code>' => 'code',
                         'GET search' => 'search',
                         'POST searchpost' => 'searchpost',
-                        'OPTIONS searchpost' => 'searchpost',
+                        'OPTIONS searchpost' => 'options',
                     ]
                 ],
                 [
@@ -85,7 +76,17 @@ return [
                         'POST signup' => 'signup',
                         'OPTIONS signup' => 'options',
                         'GET confirm/<id>/<code>' => 'confirm',
-                        'OPTIONS confirm' => 'confirm'
+                        'OPTIONS confirm' => 'confirm',
+                        'POST test' => 'test',
+                        'OPTIONS test' => 'test'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'cart',
+                    'extraPatterns' => [
+                        'POST send' => 'send',
+                        'OPTIONS send' => 'options',
                     ]
                 ],
             ],

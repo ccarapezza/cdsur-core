@@ -2,12 +2,15 @@
 
 namespace api\controllers;
 
+use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use yii\filters\Cors;
-use yii\filters\auth\HttpBearerAuth;
+use api\filters\HttpBearerCdsurAuth;
 use yii\rest\ActiveController;
 use common\models\Cart;
+use common\models\CartProducts;
+use Yii;
 
 /**
  * Cart Controller API
@@ -21,6 +24,10 @@ class CartController extends ActiveController
     public function behaviors()
 	{
 		$behaviors = parent::behaviors();
+		$behaviors['bearerAuth'] = [
+            'class' => HttpBearerCdsurAuth::className(),
+            'except' => ['login', 'signup', 'options', 'confirm'],
+        ];
 		// add CORS filter
         $behaviors['corsFilter'] = [
             'class' => \yii\filters\Cors::className(),
@@ -43,11 +50,24 @@ class CartController extends ActiveController
 		return $actions;
 	}
 
-	public function actionSendCart()
+	public function actionSend()
 	{
+		Yii::$app->response->format = Response::FORMAT_JSON;
 		$request = Yii::$app->request;
 		$cart = $request->post("cart");
 
-		return $cart;
+		$realCart = new Cart();
+		$realCart->user_id = Yii::$app->user->identity->id;
+		$realCart->save();
+		
+		foreach ($cart as $productRow) {
+			$cartProduct = new CartProducts();
+ 			$cartProduct->product_id = $productRow['product']['id'];
+ 			$cartProduct->quantity = $productRow['quantity'];
+ 			$cartProduct->cart_id = $realCart->id;
+ 			$cartProduct->save();
+		}
+
+		return $realCart;
 	}
 }
