@@ -118,3 +118,14 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.custom-icon{
+    width: 48px;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.custom-icon:hover{
+    width: 52px;
+    margin: 0px;
+}

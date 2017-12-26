@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -58,10 +58,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return Html::a('Procesar Pedido', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                    return Html::a('Procesar Pedido', ['view', 'id' => $model->id], ['class' => 'btn btn-primary ']);
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'label' => 'PDF',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $url = Url::to(['cart/generate-pedido-pdf', 'id' => $model->id]);
+                    $button = '<a href="'.$url.'"><img class="custom-icon" src="pdf-icon.png"></a>';
+                    return $button;
+                },
+            ],
         ],
     ]); ?>
 

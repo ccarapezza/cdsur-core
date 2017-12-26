@@ -10,6 +10,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\mpdf\Pdf;
 
 /**
  * CartController implements the CRUD actions for Cart model.
@@ -139,5 +140,41 @@ class CartController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionFinalizePedidoWithPdfGen($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = CartStatus::Finalized;
+        if($model->save()){
+            $this->actionGeneratePedidoPdf($id);
+        }
+    }
+
+    public function actionGeneratePedidoPdf($id)
+    {
+        $model = $this->findModel($id);
+
+        $pdfTemplate =  $this->renderPartial('pedido', [
+            'model' => $model,
+        ]);
+
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+             // set mPDF properties on the fly
+            'options' => ['title' => 'Pedido N-'.$id]
+        ]);
+        $mpdf = $pdf->api; // fetches mpdf api
+        $mpdf->WriteHtml($pdfTemplate);
+        $ts = date_timestamp_get(date_create());
+
+        echo $mpdf->Output('pedido-'.$id.'-'.$ts.'.pdf', 'D');
     }
 }
