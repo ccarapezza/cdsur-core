@@ -10,6 +10,8 @@ use Yii;
  * @property string $id
  * @property integer $user_id
  * @property string $status
+ * @property string $created_date
+ * @property string $updated_date
  *
  * @property User $user
  * @property CartProducts[] $cartProducts
@@ -31,6 +33,7 @@ class Cart extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
+            [['created_date', 'updated_date'], 'safe'],
             [['status'], 'string', 'max' => 50],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -45,6 +48,8 @@ class Cart extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'status' => 'Status',
+            'created_date' => 'Created Date',
+            'updated_date' => 'Updated Date',
         ];
     }
 

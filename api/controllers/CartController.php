@@ -9,6 +9,7 @@ use yii\filters\Cors;
 use api\filters\HttpBearerCdsurAuth;
 use yii\rest\ActiveController;
 use common\models\Cart;
+use common\models\CartStatus;
 use common\models\CartProducts;
 use Yii;
 
@@ -58,6 +59,7 @@ class CartController extends ActiveController
 
 		$realCart = new Cart();
 		$realCart->user_id = Yii::$app->user->identity->id;
+		$realCart->status = CartStatus::Pending;
 		$realCart->save();
 		
 		foreach ($cart as $productRow) {
