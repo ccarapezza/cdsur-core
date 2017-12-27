@@ -65,7 +65,7 @@ $this->title = 'Pedido Nº '.$model->id;
         <?= ($model->status == 'PENDING') ? Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar pedido', ['finalize-pedido-with-pdf-gen', 'id' => $model->id], [
             'class' => 'btn btn-success',
             'data' => [
-                'confirm' => 'Desea finalizar el pedido y generar el PDF?',
+                'confirm' => 'Desea finalizar el pedido?',
                 'method' => 'post',
             ],
         ]):''; ?>

@@ -7,45 +7,42 @@ $this->title = 'Cdsur-core';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <img style="width: 300px;" src="CDS-logo.png" >
+            </div>
+        </div>
+        
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <h1>Bienvenido!</h1>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p class="lead">Este es el panel de administracion de CD-Sur.</p>
+
     </div>
 
     <div class="body-content">
 
         <div class="row">
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>Pedidos</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>En esta sección usted podrá atender los pedidos realizados por los clientes en tiempo real, pudiendo generar el pedido en PDF para su impresión.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                <p><a class="btn btn-default" href="#">PEDIDOS &raquo;</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>Productos</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Aqui podrá administrar el catalogo de productos disponibles, cargar fotos, detalles con texto enriquecido.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <p><a class="btn btn-default" href="#">PRODUCTOS &raquo;</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>Usuarios</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Administre el listado de usuarios desde este panel, podrá bannear, eliminar modificar y crear nuevos usuarios.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <p><a class="btn btn-default" href="#">USUARIOS &raquo;</a></p>
             </div>
         </div>
 

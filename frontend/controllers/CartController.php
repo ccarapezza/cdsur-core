@@ -147,7 +147,7 @@ class CartController extends Controller
         $model = $this->findModel($id);
         $model->status = CartStatus::Finalized;
         if($model->save()){
-            $this->actionGeneratePedidoPdf($id);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
     }
 

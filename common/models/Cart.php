@@ -11,7 +11,6 @@ use Yii;
  * @property integer $user_id
  * @property string $status
  * @property string $created_date
- * @property string $updated_date
  *
  * @property User $user
  * @property CartProducts[] $cartProducts
@@ -33,7 +32,7 @@ class Cart extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
-            [['created_date', 'updated_date'], 'safe'],
+            [['created_date'], 'safe'],
             [['status'], 'string', 'max' => 50],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -48,8 +47,7 @@ class Cart extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'status' => 'Status',
-            'created_date' => 'Created Date',
-            'updated_date' => 'Updated Date',
+            'created_date' => 'Created Date'
         ];
     }
 
@@ -67,5 +65,17 @@ class Cart extends \yii\db\ActiveRecord
     public function getCartProducts()
     {
         return $this->hasMany(CartProducts::className(), ['cart_id' => 'id']);
+    }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        foreach($this->cartProducts as $c)
+            $c->delete();
+
+        return true;
     }
 }

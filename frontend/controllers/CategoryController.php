@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -64,12 +65,14 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $model = new Category();
+        $categories = ArrayHelper::map(Category::find()->all(), 'id', 'name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'categories' => $categories,
             ]);
         }
     }

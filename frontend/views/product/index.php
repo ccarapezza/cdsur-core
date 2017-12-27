@@ -17,17 +17,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Crear Producto', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
     <div class="post-search">
         <?php $form = ActiveForm::begin([
             'action' => ['index'],
             'method' => 'post',
         ]); ?>
 
-        <?= $form->field($model, 'code') ?>
+        <h3>Buscar productos</h3>
+        <div class="form-group col-md-6">
+            <?= $form->field($model, 'code') ?>
+        </div>
 
-        <?= $form->field($model, 'description') ?>
+        <div class="form-group col-md-6">
+            <?= $form->field($model, 'description') ?>
+        </div>
 
-        <div class="form-group">
+        <div class="form-group" style="text-align: right;">
             <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton('Limpiar', ['class' => 'btn btn-default']) ?>
         </div>

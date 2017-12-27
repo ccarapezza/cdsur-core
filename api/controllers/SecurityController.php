@@ -107,12 +107,12 @@ class SecurityController extends Controller
             
             if ($model->register()) {
                 return "Register OK!";
+            }else{
+                throw new \yii\web\HttpException(400, 'Bad request. 1');
             }
+        }else{
+            throw new \yii\web\HttpException(400, 'Bad request. 2');
         }
-
-        throw new \yii\web\HttpException(403, 'Username or password is incorrect.');
-
-        //throw new \yii\web\HttpException(400, 'Bad request.');
     }
 
     public function actionConfirm($id, $code)
