@@ -6,17 +6,12 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Carts';
-$this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="cart-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= GridView::widget([
-        'dataProvider' => $pendingCartsdataProvider,
-        'columns' => [
-            'id',
+$this->title = 'Pedidos';
+$columns = [
+            [
+                'label' =>   'N°',
+                'attribute' => 'id',
+            ],
             [
                 'label' =>   'Usuario',
                 'format' => 'raw',
@@ -27,10 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     return ('<b>'.$model->user->username.'</b> ('.$model->user->email.')');
                 },
-            ],
-            [
-                'attribute' =>   'status',
-                'label' => 'Estado',
             ],
             [
                 'label' =>   'Productos',
@@ -51,55 +42,61 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'attribute' =>   'updated_date',
-                'format' => 'datetime',
+                'format' => 'raw',
                 'label' => 'Fecha',
-            ],
-            [
-                'format' => 'raw',
                 'value' => function ($model) {
-                    return Html::a('Procesar Pedido', ['view', 'id' => $model->id], ['class' => 'btn btn-primary ']);
+                    return Yii::$app->formatter->asDate($model->created_date, 'dd/MM/yy - <b>HH:mm</b>');
                 },
             ],
-            [
-                'label' => 'PDF',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    $url = Url::to(['cart/generate-pedido-pdf', 'id' => $model->id]);
-                    $button = '<a href="'.$url.'"><img class="custom-icon" src="pdf-icon.png"></a>';
-                    return $button;
-                },
-            ],
-        ],
-    ]); ?>
+            
+        ];
+?>
+<div class="cart-index">
+
+    <h2><?= Html::encode($this->title) ?> Pendientes</h2>
 
     <?= GridView::widget([
+        'dataProvider' => $pendingCartsdataProvider,
+        'columns' => array_merge($columns,[
+            [
+                'label' => 'Acciones',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a('<img class="custom-icon" src="pdf-icon.png">', ['cart/generate-pedido-pdf', 'id' => $model->id], ['class' => 'btn btn-default custom-button btn-sm']).Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data' => [
+                        'confirm' => 'Está seguro que desea eliminar el pedido?',
+                        'method' => 'post',
+                    ]]).Html::a('<span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;<span class="glyphicon glyphicon-ok"></span>', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
+                },
+                'contentOptions' =>function ($model, $key, $index, $column){
+                    return [
+                        'class' => 'action-cell'
+                    ];
+                },
+            ],
+        ]),
+        'emptyText' => 'No hay pedidos.'
+    ]); ?>
+    <hr/>
+    <h2><?= Html::encode($this->title) ?> Finalizados</h2>
+    <?= GridView::widget([
         'dataProvider' => $finalizedCartsdataProvider,
-        'columns' => [
-            'id',
-            'user.username',
-            'user.email',
-            'status',
+        'columns' => array_merge($columns,[
             [
-                'label' =>   'Productos',
+                'label' => 'Acciones',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return count($model->cartProducts);
+                    return Html::a('<img class="custom-icon" src="pdf-icon.png">', ['cart/generate-pedido-pdf', 'id' => $model->id], ['class' => 'btn btn-default custom-button btn-sm']).Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data' => [
+                        'confirm' => 'Está seguro que desea eliminar el pedido?',
+                        'method' => 'post',
+                    ]]).Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']);
+                },
+                'contentOptions' =>function ($model, $key, $index, $column){
+                    return [
+                        'class' => 'action-cell'
+                    ];
                 },
             ],
-            [
-                'attribute' =>   'cartProducts',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    $count = 0;
-                    foreach ($model->cartProducts as $cartProduct) {
-                        $count += $cartProduct->quantity;
-                    }
-                    return ($count);
-                },
-            ],
-            'updated_date:datetime',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+        ]),
+        'emptyText' => 'No hay pedidos.'
     ]); ?>
 </div>

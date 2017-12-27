@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\Product;
+use common\models\ProductSearch;
 use common\models\Category;
 use frontend\models\UploadForm;
 use yii\data\ActiveDataProvider;
@@ -41,12 +42,23 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
+        $request = Yii::$app->request;
+        $query = Product::find();
+
+        $searchModel = new ProductSearch();
+
+        if ($searchModel->load(Yii::$app->request->post())) {
+            $query->andFilterWhere(['like', 'code' , $searchModel->code]);
+            $query->andFilterWhere(['like', 'description' , $searchModel->description]);
+        }
+
         $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
+            'query' => $query,
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'model' => $searchModel,
         ]);
     }
 

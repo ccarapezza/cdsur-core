@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -16,6 +17,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Crear Producto', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <div class="post-search">
+        <?php $form = ActiveForm::begin([
+            'action' => ['index'],
+            'method' => 'post',
+        ]); ?>
+
+        <?= $form->field($model, 'code') ?>
+
+        <?= $form->field($model, 'description') ?>
+
+        <div class="form-group">
+            <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('Limpiar', ['class' => 'btn btn-default']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+    </div>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -33,6 +51,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'label' => 'Imagen',
             ],
+            [
+                'attribute' => 'Image',
+                'format' => 'raw',
+                'value' => function ($model) {   
+                    return Html::a('<span class="glyphicon glyphicon-qrcode"></span>', ['qrcodes', 'code' => $model->code], ['class' => 'btn btn-success']);
+                },
+                'label' => 'Imagen',
+            ],
+            
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

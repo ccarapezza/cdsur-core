@@ -119,13 +119,30 @@ a.desc:after {
     outline: none;
 }
 
-.custom-icon{
-    width: 48px;
-    cursor: pointer;
-    margin: 2px;
+.custom-button{
+    padding: 0;
 }
 
-.custom-icon:hover{
-    width: 52px;
-    margin: 0px;
+.custom-icon{
+    width: 28px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.table > tbody > tr > td{
+    padding: 0 8px;
+    vertical-align: middle;
+}
+
+.table .empty{
+    padding: 1em;
+    text-align: center;
+    font-weight: bold;
+}
+.table > tbody > tr > td .btn{
+    margin: 2px 5px;
+}
+
+.table > tbody > tr > td.action-cell{
+    width: 1%;
 }

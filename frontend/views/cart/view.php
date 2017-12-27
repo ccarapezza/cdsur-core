@@ -10,8 +10,8 @@ use yii\grid\GridView;
 $this->title = 'Pedido Nº '.$model->id;
 ?>
 <div class="cart-view">
-
     <h1><?= Html::encode($this->title) ?></h1>
+    <?=($model->status == 'PENDING') ? '<div class="alert alert-success" role="alert">Estado: <b>PENDIENTE</b></div>' : '<div class="alert alert-danger" role="alert">Estado: <b>FINALIZADO</b></div>'; ?>
     
     <h2>Datos del cliente</h2>
     <?= DetailView::widget([
@@ -62,13 +62,13 @@ $this->title = 'Pedido Nº '.$model->id;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar pedido', ['finalize-pedido-with-pdf-gen', 'id' => $model->id], [
+        <?= ($model->status == 'PENDING') ? Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar pedido', ['finalize-pedido-with-pdf-gen', 'id' => $model->id], [
             'class' => 'btn btn-success',
             'data' => [
                 'confirm' => 'Desea finalizar el pedido y generar el PDF?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]):''; ?>
     </p>
 
 </div>
