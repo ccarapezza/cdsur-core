@@ -42,6 +42,18 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'localhost',
+                'username' => 'info@cdsurargentina.com.ar',
+                'password' => 'W@xA0C30jN',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => true,

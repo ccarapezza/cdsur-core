@@ -7,10 +7,13 @@ return [
         ],
         'user' => [
 	        'identityClass' => 'common\models\User',
-	    ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => false,
+        ],
+        'view' => [
+          'theme' => [
+              'pathMap' => [
+                  '@dektrium/user/views/mail' => '@common/mail'
+              ],
+          ],
         ],
     ],
     'modules' => [
