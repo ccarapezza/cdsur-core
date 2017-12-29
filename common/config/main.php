@@ -19,6 +19,7 @@ return [
     'modules' => [
 	    'user' => [
 	        'class' => 'dektrium\user\Module',
+          'admins' => ['administrador']
 	    ],
 	],
 ];
