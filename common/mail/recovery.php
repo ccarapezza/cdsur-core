@@ -17,14 +17,14 @@ use yii\helpers\Html;
  */
 ?>
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    <?= Yii::t('user', 'Hello') ?>,
+    <?= Yii::t('user', 'Hola!') ?>,
 </p>
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    <?= Yii::t('user', 'Gracias por registrarte a {0}', Yii::$app->name) ?>.
-    <?= Yii::t('user', 'Para completar su registro, por favor haga click en el siguiente link.') ?>.
+    <?= Yii::t('user', 'Recientemente ha solicitado la recuperación de tu contraseña en {0}', Yii::$app->name) ?>.
+    <?= Yii::t('user', 'Por favor, haga click en el enlace de más abajo para restablecer su contraseña') ?>.
 </p>
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    <?= Html::a(Html::encode($token->url), $token->url) ?>
+    <?= Html::a(Html::encode($token->url), $token->url); ?>
 </p>
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
     <?= Yii::t('user', 'Si tiene problemas, por favor, pegue la siguiente dirección URL en su navegador web') ?>.

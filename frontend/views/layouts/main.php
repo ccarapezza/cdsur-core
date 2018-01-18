@@ -37,14 +37,14 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Pedidos', 'url' => ['/cart/index']],
-        ['label' => 'Categories', 'url' => ['/category/index']],
-        ['label' => 'Products', 'url' => ['/product/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/user/registration/register']];
+        //$menuItems[] = ['label' => 'Signup', 'url' => ['/user/registration/register']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/user/security/login']];
     } else {
+        $menuItems[] = ['label' => 'Pedidos', 'url' => ['/cart/index']];
+        $menuItems[] = ['label' => 'Categories', 'url' => ['/category/index']];
+        $menuItems[] = ['label' => 'Products', 'url' => ['/product/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/user/security/logout'], 'post')
             . Html::submitButton(

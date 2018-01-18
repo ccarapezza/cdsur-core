@@ -12,23 +12,21 @@
 use yii\helpers\Html;
 
 /**
- * @var dektrium\user\models\User $user
- * @var dektrium\user\models\Token $token
+ * @var dektrium\user\Module          $module
+ * @var dektrium\user\models\User     $user
+ * @var dektrium\user\models\Password $password
  */
+
 ?>
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    <?= Yii::t('user', 'Hello') ?>,
+    <?= Yii::t('user', 'Hola!') ?>,
 </p>
+
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    <?= Yii::t('user', 'Gracias por registrarte a {0}', Yii::$app->name) ?>.
-    <?= Yii::t('user', 'Para completar su registro, por favor haga click en el siguiente link.') ?>.
+    <?= Yii::t('user', 'Su cuenta en {0} tiene una nueva contraseña', Yii::$app->name) ?>.
+    <?= Yii::t('user', 'Hemos generado una contraseña para usted') ?>: <strong><?= $user->password ?></strong>
 </p>
-<p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    <?= Html::a(Html::encode($token->url), $token->url) ?>
-</p>
-<p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    <?= Yii::t('user', 'Si tiene problemas, por favor, pegue la siguiente dirección URL en su navegador web') ?>.
-</p>
+
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
     <?= Yii::t('user', 'PD: Si ha recibido este correo electrónico por error, simplemente elimínelo') ?>.
 </p>

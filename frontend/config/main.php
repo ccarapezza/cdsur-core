@@ -36,9 +36,17 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'view' => [
+          'theme' => [
+              'pathMap' => [
+                  '@dektrium/user/views/mail' => '@common/mail'
+              ],
+          ],
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
+            'viewPath' => '@common/mail',   
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'localhost',
