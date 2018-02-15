@@ -62,7 +62,7 @@ $columns = [
                 'label' => 'Acciones',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return Html::a('<img class="custom-icon" src="pdf-icon.png">', ['cart/generate-pedido-pdf', 'id' => $model->id], ['class' => 'btn btn-default custom-button btn-sm']).Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data' => [
+                    return Html::a('<img class="custom-icon" src="../pdf-icon.png">', ['cart/generate-pedido-pdf', 'id' => $model->id], ['class' => 'btn btn-default custom-button btn-sm']).Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data' => [
                         'confirm' => 'Está seguro que desea eliminar el pedido?',
                         'method' => 'post',
                     ]]).Html::a('<span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;<span class="glyphicon glyphicon-ok"></span>', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
@@ -85,7 +85,7 @@ $columns = [
                 'label' => 'Acciones',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return Html::a('<img class="custom-icon" src="pdf-icon.png">', ['cart/generate-pedido-pdf', 'id' => $model->id], ['class' => 'btn btn-default custom-button btn-sm']).Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data' => [
+                    return Html::a('<img class="custom-icon" src="../pdf-icon.png">', ['cart/generate-pedido-pdf', 'id' => $model->id], ['class' => 'btn btn-default custom-button btn-sm']).Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data' => [
                         'confirm' => 'Está seguro que desea eliminar el pedido?',
                         'method' => 'post',
                     ]]).Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']);
