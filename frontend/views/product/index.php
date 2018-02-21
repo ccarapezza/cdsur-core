@@ -61,9 +61,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'Image',
                 'format' => 'raw',
                 'value' => function ($model) {   
-                    return Html::a('<span class="glyphicon glyphicon-qrcode"></span>', ['qrcodes', 'code' => $model->code], ['class' => 'btn btn-success']);
+                    return Html::a('<span class="glyphicon glyphicon-qrcode"></span>', ['qrcodes', 'code' => $model->code], ['class' => 'btn btn-primary']);
                 },
-                'label' => 'Imagen',
+                'label' => 'Generar Planilla QRs',
+            ],
+            [
+                'attribute' => 'Image',
+                'format' => 'raw',
+                'value' => function ($model) {   
+                    return Html::a('<span class="glyphicon glyphicon-qrcode"></span>', ['qr-one-codes', 'code' => $model->code], ['class' => 'btn btn-success']);
+                },
+                'label' => 'Generar QR',
             ],
             
             ['class' => 'yii\grid\ActionColumn'],

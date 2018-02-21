@@ -237,8 +237,28 @@ class ProductController extends Controller
         echo $mpdf->Output('qr-codes-'.$ts.'.pdf', 'D');
     }
 
-    public function actionPdfqr(){
-        $this->generateProductQrPage(17505);
+    public function actionQrOneCodes($code){
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+             // set mPDF properties on the fly
+            'options' => ['title' => 'QR-CODES']
+        ]);
+        $mpdf = $pdf->api; // fetches mpdf api
+
+        $varHtml = "<div style='with: 100%;'>";
+        $varHtml .= $this->generateHtmlQrcode("PRODUCT", $code, 80);
+        $varHtml .= "</div>";
+
+        $mpdf->WriteHtml($varHtml);
+        $ts = date_timestamp_get(date_create());
+        echo $mpdf->Output('qr-one-code-'.$ts.'.pdf', 'D');
     }
 
     /**
